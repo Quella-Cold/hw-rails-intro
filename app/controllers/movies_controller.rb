@@ -7,9 +7,19 @@ class MoviesController < ApplicationController
     end
   
     def index
-      @movies = Movie.all
+      sequence = params[:sort]
+      if sequence == nil
+        @movies = Movie.all()
+      else
+        @movies = Movie.all().order(sequence)
+        if sequence == 'title'
+          @title_th == 'bg-warning'
+        elsif sequence == 'release_date'
+          @time_th = 'bg-warning'
+        end
+      end
     end
-  
+
     def new
       # default: render 'new' template
     end
