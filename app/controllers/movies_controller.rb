@@ -7,7 +7,14 @@ class MoviesController < ApplicationController
     end
   
     def index
+      @rated = Movie.get_rated
       sequence = params[:sort]
+      filt_rating = params[:ratings]
+      puts(filt_rating)
+      if filt_rating != nil
+        @movies = Movie.with_rated(filt_rating)
+        return
+      end
       if sequence == nil
         @movies = Movie.all()
       else
