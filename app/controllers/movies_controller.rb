@@ -10,11 +10,27 @@ class MoviesController < ApplicationController
       @rated = Movie.get_rated
       sequence = params[:sort]
       filt_rating = params[:ratings]
-      puts(filt_rating)
+      #puts(filt_rating)
       if filt_rating != nil
-        @movies = Movie.with_rated(filt_rating)
-        return
+      #  @movies = Movie.with_rated(filt_rating)
+      #  return
+        session[filt_rating] = filt_rating 
       end
+      
+      if sequence != nil
+        session[:sequence] = sequence
+      end
+      
+      if sequence == nil and filt_rating == nil and (session[:filt_rating] != nil or session[:sequence] != nil)
+        filt_rating = session[:filt_rating]
+        sequence = session[:sequence]
+        flash.keep
+        redirect_to movies_path({sort:sequence, ratings:filt_rating})
+      end
+      
+      sequence = session[:sequence]
+      filt_rating = session[:filt_rating]
+      
       if sequence == nil
         @movies = Movie.all()
       else
@@ -25,6 +41,12 @@ class MoviesController < ApplicationController
           @time_th = 'bg-warning'
         end
       end
+    
+
+      if filt_rating != nil
+        @movies = @movies.select{|movie| filt_rating.include? movie.rating}
+      end
+      
     end
 
     def new
