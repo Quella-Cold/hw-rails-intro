@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
     end
   
     def index
+      #initial the parameters
       @rated = Movie.get_rated
       sequence = params[:sort]
       filt_rating = params[:ratings]
@@ -14,18 +15,22 @@ class MoviesController < ApplicationController
       if filt_rating != nil
       #  @movies = Movie.with_rated(filt_rating)
       #  return
-        session[filt_rating] = filt_rating 
+        session[:filt_rating] = filt_rating 
       end
-      
+
       if sequence != nil
         session[:sequence] = sequence
       end
       
-      if sequence == nil and filt_rating == nil and (session[:filt_rating] != nil or session[:sequence] != nil)
-        filt_rating = session[:filt_rating]
-        sequence = session[:sequence]
-        flash.keep
-        redirect_to movies_path({sort:sequence, ratings:filt_rating})
+      if sequence == nil
+        if filt_rating == nil 
+          if (session[:filt_rating] != nil or session[:sequence] != nil)
+            filt_rating = session[:filt_rating]
+            sequence = session[:sequence]
+            flash.keep
+            redirect_to movies_path({sort:sequence, ratings:filt_rating})
+          end
+        end
       end
       
       sequence = session[:sequence]
@@ -36,9 +41,9 @@ class MoviesController < ApplicationController
       else
         @movies = Movie.all().order(sequence)
         if sequence == 'title'
-          @title_th == 'bg-warning'
+          @name == 'bg-warning'
         elsif sequence == 'release_date'
-          @time_th = 'bg-warning'
+          @time = 'bg-warning'
         end
       end
     
