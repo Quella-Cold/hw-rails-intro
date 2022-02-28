@@ -1,0 +1,2 @@
+github: https://github.com/Quella-Cold/hw-rails-intro
+Heroku: http://infinite-garden-21864.herokuapp.com/
