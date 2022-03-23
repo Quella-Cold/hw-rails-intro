@@ -41,7 +41,7 @@ class MoviesController < ApplicationController
       else
         @movies = Movie.all().order(sequence)
         if sequence == 'title'
-          @name == 'bg-warning'
+          @name = 'bg-warning'
         elsif sequence == 'release_date'
           @time = 'bg-warning'
         end
